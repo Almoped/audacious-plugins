@@ -138,7 +138,8 @@ void StatusBar::update_codec()
     String codec = tuple.get_str(Tuple::Codec);
 
     int bitrate, samplerate, channels;
-    aud_drct_get_info(bitrate, samplerate, channels);
+    float gain;
+    aud_drct_get_info(bitrate, samplerate, channels, gain);
 
     StringBuf buf(0);
 
@@ -172,6 +173,9 @@ void StatusBar::update_codec()
 
     if (bitrate > 0)
         str_append_printf(buf, _("%d kbit/s"), bitrate / 1000);
+
+    if (gain != 0)
+        str_append_printf(buf, _(", %.2f dB"), gain);
 
     codec_label->setText((const char *)buf);
     codec_label->show();
